@@ -8,7 +8,7 @@ from config import BOT_TOKEN, ADMIN_IDS, PLANS, FORCE_CHANNEL, PORT
 from database import (
     get_user, create_user, reset_daily_if_needed, increment_download_count,
     get_settings, ban_user, unban_user, get_all_users, get_premium_users, get_stats,
-    set_plan, remove_premium
+    set_plan, remove_premium, increment_stat
 )
 from handlers import user, admin
 from utils import fetch_terabox_data, apply_rename_and_replace, get_file_type
@@ -91,7 +91,6 @@ async def handle_terabox_link(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     async with semaphore:
         try:
-            file_type = get_file_type(filename)
             success = await download_and_upload_stream(
                 chat_id=target_chat,
                 download_url=download_link,
@@ -122,7 +121,7 @@ async def unknown(update, context):
 
 # ---------- Main ----------
 async def main():
-    # Start web server for health check
+    # Start web server for health check (in background)
     asyncio.create_task(web.run_web_server(PORT))
 
     request = HTTPXRequest(read_timeout=120.0)
