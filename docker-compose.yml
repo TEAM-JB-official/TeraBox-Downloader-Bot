@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  bot:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - MONGO_URL=${MONGO_URL}
+      - ADMIN_IDS=${ADMIN_IDS}
+      - FORCE_CHANNEL=${FORCE_CHANNEL}
+      - REFERRAL_BONUS_DAYS=${REFERRAL_BONUS_DAYS}
+    restart: always
